@@ -1,12 +1,10 @@
+
 class TabNode:
     def __init__(self,string_number : int = 0, fret_number : int = 0) -> TabNode: 
         self.string_number = string_number
         self.fret_number = fret_number
         self.next = None
 
-
-import msql.connector
-from typing import Any
 
 def decustruct_tabnodes(tab_id: int,head: TabNode, cursor, db) -> None:
     order_id = 1
@@ -21,10 +19,6 @@ def decustruct_tabnodes(tab_id: int,head: TabNode, cursor, db) -> None:
         db.commit()
         current = current.next
         order_id += 1
-
-
-
-
 
 
 def reconstuct_tabnodes(tab_id: int,cursor) -> TabNode:
