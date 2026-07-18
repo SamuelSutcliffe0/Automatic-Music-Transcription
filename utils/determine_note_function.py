@@ -1,4 +1,4 @@
-def build_guitar_frequencies(max_fret=20):
+def build_guitar_fretboard(max_fret=20):
 
     open_strings = {
         "1": 82.41,
@@ -9,17 +9,17 @@ def build_guitar_frequencies(max_fret=20):
         "6": 329.63,
     }
 
-    guitar_map = []
+    fretboard = []
 
-    for string_name in open_strings:
-        fundamental_frequency = open_strings[string_name]
+    for string in open_strings:
+        fundamental_frequency = open_strings[string]
         for fret in range(max_fret + 1):
             freq = round(
                 fundamental_frequency * (2 ** (fret / 12)), 2
-            )  # Because the 12th fret is exactly half the length of the open string, which means the frequency is exactly double the open note. This doubling is how an octave is physically defined in music.
-            guitar_map.append({"string": string_name, "fret": fret, "frequency": freq})
+            )
+            fretboard.append({"string": string, "fret": fret, "frequency": freq})
 
-    return guitar_map
+    return fretboard
 
 def quicksort(array: list, low: int, high: int):
    if low < high:
@@ -46,19 +46,22 @@ def partition(array: list, low: int, high: int):
            return j
        array[i], array[j] = array[j], array[i]
 
-guitar_map = build_guitar_frequencies()
-quicksort(guitar_map, 0, len(guitar_map) - 1)
+fretboard = build_guitar_fretboard()
+quicksort(fretboard, 0, len(fretboard) - 1)
 
-def determine_note(frequency: int):
-    low, high = 0, len(guitar_map) - 1
+def determine_note(frequency: int) -> dict[int, int, float]:
+
+    fretboard = build_guitar_fretboard()
+    quicksort(fretboard, 0, len(fretboard) - 1)
+    low, high = 0, len(fretboard) - 1
 
     while low <= high:
         mid = (low + high) // 2
-        mid_freq = guitar_map[mid]["frequency"]
+        mid_freq = fretboard[mid]["frequency"]
 
 
         if mid_freq == frequency:
-            return guitar_map[mid]
+            return fretboard[mid]
 
 
         if frequency < mid_freq:
@@ -67,10 +70,10 @@ def determine_note(frequency: int):
             low = mid + 1
 
     candidates = []
-    if 0 <= high < len(guitar_map):
-        candidates.append(guitar_map[high])
-    if 0 <= low < len(guitar_map):
-        candidates.append(guitar_map[low])
+    if 0 <= high < len(fretboard):
+        candidates.append(fretboard[high])
+    if 0 <= low < len(fretboard):
+        candidates.append(fretboard[low])
 
     def frequency_difference(note):
         return abs(note["frequency"] - frequency)
