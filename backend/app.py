@@ -19,6 +19,7 @@ class Website:
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 
         self.db, self.cursor = self.initiate_db()
+        self.create_tables()
 
     
 
