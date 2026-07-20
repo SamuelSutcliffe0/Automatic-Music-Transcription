@@ -1,4 +1,6 @@
 from flask import Flask 
+import utils
+import screens
 app = Flask(__name__) 
 @app.route("/") 
 def home(): 
@@ -18,10 +20,10 @@ class Website:
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 
-        self.db, self.cursor = self.initiate_db()
+        self.cursor, self.db = connect()
         self.create_tables()
+        self.create_screens()
 
-    
 
     def create_tables(self):
 
@@ -89,21 +91,9 @@ class Website:
             """)
         self.db.commit()
 
-    def initiate_db(self):
-        try:
-            db = mysql.connector.connect(
-                host=os.environ.get("DB_HOST"),
-                user=os.environ.get("DB_USER"),
-                password=os.environ.get("DB_PASSWORD"),
-                database=os.environ.get("DB_NAME"),
-                connection_timeout=10,
-                autocommit=True
-            )
-            cursor = db.cursor()
-            return db, cursor
-        except Exception as e:
-            print("Database connection failed:", e)
-            return None, None
+    def create_screens(self):
+
+        LoginScreen(self)
 
     def run(self):
         port = int(os.environ.get("PORT", 5000))

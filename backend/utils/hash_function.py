@@ -94,11 +94,11 @@ K = [
 ]
 
 
-def right_rotate(value, bits):
+def right_rotate(value: bytes, bits: int) -> bytes:
     return ((value >> bits) | (value << (32 - bits))) & 0xFFFFFFFF
 
 
-def calculate_W(chunk: str):
+def calculate_W(chunk: str) -> list:
     W = []
 
     for i in range(16):
@@ -113,7 +113,7 @@ def calculate_W(chunk: str):
     return W
 
 
-def chunk_cycle(buffer_values, chunk):
+def chunk_cycle(buffer_values: list, chunk: bytes) -> list:
     W = calculate_W(chunk)
 
     for i in range(64):
@@ -122,7 +122,7 @@ def chunk_cycle(buffer_values, chunk):
     return buffer_values
 
 
-def round_step(buffer_values, W, K):
+def round_step(buffer_values: list, W: list, K: list) -> tuple:
     A, B, C, D, E, F, G, H = buffer_values
     Ch = (E & F) ^ ((~E) & G)
     Ma = (A & B) ^ (A & C) ^ (B & C)
@@ -136,7 +136,7 @@ def round_step(buffer_values, W, K):
     return ((T1 + T2) & 0xFFFFFFFF, A, B, C, (D + T1) & 0xFFFFFFFF, E, F, G)
 
 
-def hash(message, salt):
+def hash(message: str, salt: bytes) -> str:
     num = preprocessing(message, salt)
     padded = padding(num)
 
