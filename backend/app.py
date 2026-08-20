@@ -1,15 +1,6 @@
 from flask import Flask 
-import utils
+import utils 
 import screens
-app = Flask(__name__) 
-@app.route("/") 
-def home(): 
-    return {"message": "Hello from Flask"} 
-if __name__ == "__main__": 
-    app.run(debug=True) 
-
-
-
 import os
 from flask import Flask
 import mysql.connector
@@ -20,7 +11,7 @@ class Website:
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 
-        self.cursor, self.db = connect()
+        self.cursor, self.db = utils.connect()
         self.create_tables()
         self.create_screens()
 
@@ -92,7 +83,6 @@ class Website:
         self.db.commit()
 
     def create_screens(self):
-
         LoginScreen(self)
 
     def run(self):
@@ -100,4 +90,4 @@ class Website:
         self.app.run(host="0.0.0.0", port=port)
 
 website = Website()
-app = website.app
+website.run()

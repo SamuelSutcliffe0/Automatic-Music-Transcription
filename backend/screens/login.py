@@ -9,7 +9,7 @@ class LoginScreen:
     def login(self):
 
         username = request.form["username"]
-        password = hash(request.form["password"])
+        password = hash(request.form["password"]) 
 
         if not username or not password:
             return jsonify({"error": "Please Enter a Username and Password"})

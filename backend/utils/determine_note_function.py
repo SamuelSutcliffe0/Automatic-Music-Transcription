@@ -1,3 +1,5 @@
+from .imports import *
+
 def build_guitar_fretboard(max_fret=20):
 
     open_strings = {
@@ -36,11 +38,11 @@ def partition(array: list, low: int, high: int):
    while True:
        while True:
            i = i + 1
-           if array[i] >= pivot:
+           if array[i]["frequency"] >= pivot["frequency"]:
                break
        while True:
            j = j - 1
-           if array[j] <= pivot:
+           if array[j]["frequency"] <= pivot["frequency"]:
                break
        if i >= j:
            return j

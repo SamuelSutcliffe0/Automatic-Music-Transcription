@@ -1,3 +1,5 @@
+from .imports import *
+
 def auto_reconnect(func):
     @functools.wraps(func)   
     def wrapper(self, *args, **kwargs):
@@ -5,14 +7,6 @@ def auto_reconnect(func):
             return func(self, *args, **kwargs)
         except errors.OperationalError as e:
             if e.errno == 2013: 
-                self.db = mysql.connector.connect(
-                host=os.environ.get("DB_HOST"),
-                user=os.environ.get("DB_USER"),
-                password=os.environ.get("DB_PASSWORD"),
-                database=os.environ.get("DB_NAME"),
-                connection_timeout=10,
-                autocommit=True
-                )
                 self.cursor,self.db = connect()
                 return func(self, *args, **kwargs)
             else:
@@ -20,14 +14,15 @@ def auto_reconnect(func):
     return wrapper
 
 def connect():
-    db = mysql.connector.connect(
-    host=os.environ.get("DB_HOST"),
-    user=os.environ.get("DB_USER"),
-    password=os.environ.get("DB_PASSWORD"),
-    database=os.environ.get("DB_NAME"),
-    connection_timeout=10,
+    load_dotenv()
+    db = pymysql.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME"),
+    connect_timeout=100,
     autocommit=True
     )
     cursor = db.cursor()
 
-    return cursor,db
+    return db, cursor
