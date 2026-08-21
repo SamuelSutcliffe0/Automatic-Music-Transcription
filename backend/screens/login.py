@@ -10,26 +10,33 @@ class LoginScreen:
     @auto_reconnect
     def login(self):
 
+        #recieve form fields from frontend
         username = request.form["username"]
-        password = hash(request.form["password"]) 
+        password = request.form["password"]
 
+        #check for empty fields 
         if not username or not password:
-            return jsonify({"error": "Please Enter a Username and Password"})
+            return jsonify({"error": "Please Complete All Fields"})
 
-        self.cursor.execute("SELECT password FROM users WHERE username=%s", (username,))
+        #SQL query to fetch details for login 
+        self.cursor.execute("SELECT password, salt, user_id FROM Users WHERE username=%s", (username,))
         row = self.cursor.fetchone()
 
+        #check if user exists 
         if not row:
             return jsonify({"error": "User Not Found"})
 
-        if row[0] != password:
+        #define columns in row
+        db_password = row[0]
+        db_salt = row[1]
+        db_user_id = row[2]
+
+        #check if passwords match
+        if db_password != hash(password, db_salt):
             return jsonify({"error": "Incorrect Password"})
 
-
+        #initiate a user session passing the username and id into the session for later use
         session["username"] = username
-        self.cursor.execute("SELECT id FROM users WHERE username=%s", (username,))
-        return_id = self.cursor.fetchone()
-        session["user_id"] = int(return_id[0])
-
+        session["user_id"] = db_user_id
         return jsonify({"message": "Login Successful"})
 

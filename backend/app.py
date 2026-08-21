@@ -88,7 +88,7 @@ class Website:
         screens.LoginScreen(self.app)
 
     def run(self):
-        port = int(os.environ.get("PORT", 5000))
+        port = int(5000) 
         self.app.run(host="0.0.0.0", port=port)
 
 website = Website()
