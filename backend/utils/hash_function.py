@@ -1,5 +1,6 @@
 from .imports import *
 
+
 def preprocessing(text: str, salt: bytes) -> int:
     data = text.encode()
 
@@ -157,4 +158,3 @@ def hash(message: str, salt: bytes) -> str:
         buffer_values = chunk_cycle(buffer_values, padded[512 * i : 512 * (i + 1)])
 
     return "".join(f"{v:08x}" for v in buffer_values)
-

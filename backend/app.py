@@ -1,12 +1,11 @@
-from flask import Flask 
-import utils 
+from flask import Flask
+import utils
 import screens
 import os
-from flask import Flask
 import pymysql
-import screens 
 
-class Website: 
+
+class Website:
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
@@ -15,10 +14,9 @@ class Website:
         self.create_tables()
         self.create_screens()
 
-
     def create_tables(self):
 
-        #Users:
+        # Users:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Users (
             user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +27,7 @@ class Website:
         """)
         self.db.commit()
 
-        #Admins:
+        # Admins:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Admins (
             admin_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,7 +38,7 @@ class Website:
             """)
         self.db.commit()
 
-        #Tabs:
+        # Tabs:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Tabs (
             tab_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +48,7 @@ class Website:
             """)
         self.db.commit()
 
-        #Groups:
+        # Groups:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS UserGroups (
             group_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,7 +57,7 @@ class Website:
             """)
         self.db.commit()
 
-        #Entries:
+        # Entries:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Entries ( 
             entry_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -71,7 +69,7 @@ class Website:
             """)
         self.db.commit()
 
-        #TabNodes:
+        # TabNodes:
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS TabNodes ( 
             node_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -88,8 +86,9 @@ class Website:
         screens.LoginScreen(self.app)
 
     def run(self):
-        port = int(5000) 
+        port = int(5000)
         self.app.run(host="0.0.0.0", port=port)
+
 
 website = Website()
 website.run()
