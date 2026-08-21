@@ -7,7 +7,7 @@ def auto_reconnect(func):
             return func(self, *args, **kwargs)
         except errors.OperationalError as e:
             if e.errno == 2013: 
-                self.cursor,self.db = connect()
+                self.db, self.cursor = connect()
                 return func(self, *args, **kwargs)
             else:
                 raise

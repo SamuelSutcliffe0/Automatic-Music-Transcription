@@ -3,7 +3,7 @@ import utils
 import screens
 import os
 from flask import Flask
-import mysql.connector
+import pymysql
 import screens 
 
 class Website: 
@@ -11,7 +11,7 @@ class Website:
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 
-        self.cursor, self.db = utils.connect()
+        self.db, self.cursor = utils.connect()
         self.create_tables()
         self.create_screens()
 
@@ -27,9 +27,9 @@ class Website:
             salt BINARY(4)
         )
         """)
+        self.db.commit()
 
         #Admins:
-        self.db.commit()
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Admins (
             admin_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -41,19 +41,18 @@ class Website:
         self.db.commit()
 
         #Tabs:
-        self.db.commit()
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Tabs (
             tab_id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT FOREIGN KEY
+            user_id INT,
+            FOREIGN KEY (user_id) REFERENCES Users(user_id)
             )
             """)
         self.db.commit()
 
         #Groups:
-        self.db.commit()
         self.cursor.execute("""
-        CREATE TABLE IF NOT EXISTS Groups (
+        CREATE TABLE IF NOT EXISTS UserGroups (
             group_id INT AUTO_INCREMENT PRIMARY KEY,
             group_name VARCHAR(64)
             )
@@ -61,29 +60,32 @@ class Website:
         self.db.commit()
 
         #Entries:
-        self.db.commit()
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS Entries ( 
             entry_id INT AUTO_INCREMENT PRIMARY KEY,
-            tab_id INT FOREIGN KEY,
-            group_id INT FOREIGN KEY
+            tab_id INT,
+            group_id INT,
+            FOREIGN KEY (tab_id) REFERENCES Tabs(tab_id),
+            FOREIGN KEY (group_id) REFERENCES UserGroups(group_id)
+            )
             """)
         self.db.commit()
 
         #TabNodes:
-        self.db.commit()
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS TabNodes ( 
             node_id INT AUTO_INCREMENT PRIMARY KEY,
-            tab_id INT FOREIGN KEY,
+            tab_id INT, 
             order_id INT,
             string_number INT,
-            fret_number INT 
+            fret_number INT,
+            FOREIGN KEY (tab_id) REFERENCES Tabs(tab_id)
+            )
             """)
         self.db.commit()
 
     def create_screens(self):
-        LoginScreen(self)
+        screens.LoginScreen(self.app)
 
     def run(self):
         port = int(os.environ.get("PORT", 5000))

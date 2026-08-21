@@ -1,9 +1,11 @@
+from .imports import *
+
 class LoginScreen:
-    def __init__(self, website):
-        self.website = website
-        self.app = website.app
-        self.db, self.cursor = website.initiate_db()
+    def __init__(self, app):
+        self.app = app
         self.app.add_url_rule("/login", view_func=self.login, methods=["POST"])
+
+        self.db, self.cursor = connect()
 
     @auto_reconnect
     def login(self):
