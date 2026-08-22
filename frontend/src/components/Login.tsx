@@ -6,28 +6,29 @@ const Login: React.FC = () => {
     const [error, setError] = useState('');
     
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: new URLSearchParams({
-            username: username,
-            password: password
-        })
-        })
-        .then(res => res.json())
-        .then(data => {
-        if (data.error) {
-            setError(data.error);
-        } else if (data.message === "Login Successful") {
-            window.location.href = "/welcome";
-        }
-        });
+        setError("");
+
+        try {
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username,
+                    password,
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.error) return setError(data.error);
+            if (data.message === "Login Successful") window.location.href = "/welcome";
+        } catch {
+            setError("Something went wrong. Please try again.");
         }
         
+    };
 
     return (
     <div>
@@ -45,11 +46,12 @@ const Login: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
         </form>
     </div>
 );
 
 };
- 
+
+
 export default Login;

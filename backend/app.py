@@ -3,12 +3,13 @@ import utils
 import screens
 import os
 import pymysql
-
+from flask_cors import CORS
 
 class Website:
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
+        CORS(self.app)
 
         self.db, self.cursor = utils.connect()
         self.create_tables()
