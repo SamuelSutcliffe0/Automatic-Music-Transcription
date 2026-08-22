@@ -22,7 +22,7 @@ class Website:
         CREATE TABLE IF NOT EXISTS Users (
             user_id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(40) UNIQUE NOT NULL,
-            password VARCHAR(40) NOT NULL,
+            password VARCHAR(64) NOT NULL,
             salt BINARY(4)
         )
         """)
@@ -33,7 +33,7 @@ class Website:
         CREATE TABLE IF NOT EXISTS Admins (
             admin_id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(40) UNIQUE NOT NULL,
-            password VARCHAR(40) NOT NULL,
+            password VARCHAR(64) NOT NULL,
             salt BINARY(4)
             )
             """)
