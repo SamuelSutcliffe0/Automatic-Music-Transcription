@@ -6,14 +6,16 @@ class LoginScreen:
         self.app = app
         self.app.add_url_rule("/login", view_func=self.login, methods=["POST"])
 
-        self.db, self.cursor = connect()
+        self.db, self.cursor = utils.connect()
 
-    @auto_reconnect
+    @utils.auto_reconnect
     def login(self):
 
         # recieve form fields from frontend
-        username = request.form["username"]
-        password = request.form["password"]
+        data = request.get_json()
+        username = data["username"]
+        password = data["password"]
+
 
         # check for empty fields
         if not username or not password:
@@ -35,7 +37,7 @@ class LoginScreen:
         db_user_id = row[2]
 
         # check if passwords match
-        if db_password != hash(password, db_salt):
+        if db_password != utils.hash(password, db_salt):
             return jsonify({"error": "Incorrect Password"})
 
         # initiate a user session passing the username and id into the session for later use

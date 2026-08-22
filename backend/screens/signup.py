@@ -1,20 +1,24 @@
 from .imports import *
 
 
-class SignInScreen:
+class SignUpScreen:
     def __init__(self, app):
         self.app = app
         self.app.add_url_rule("/signup", view_func=self.signup, methods=["POST"])
 
-        self.db, self.cursor = connect()
+        self.db, self.cursor = utils.connect()
 
-    @auto_reconnect
+    @utils.auto_reconnect
     def signup(self):
 
+        # generate unique user salt of 4 byte binary
+        salt = os.urandom(4)
+
         # recieve form fields from frontend
-        username = request.form["username"]
-        password = hash(request.form["password"])
-        confirm_password = hash(request.form["confirm_password"])
+        data = request.get_json()
+        username = data["username"]
+        password = utils.hash(data["password"], salt)
+        confirm_password = utils.hash(data["confirm_password"], salt)
 
         # check for empty fields
         if not username or not password or not confirm_password:
@@ -31,9 +35,6 @@ class SignInScreen:
         row = self.cursor.fetchone()
         if row:
             return jsonify({"error": "Username Already Taken"})
-
-        # generate unique user salt of 4 byte binary
-        salt = os.urandom(4)
 
         # SQL to add the new user to database
         self.cursor.execute(

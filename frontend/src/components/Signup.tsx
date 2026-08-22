@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
  
-const Singup: React.FC = () => {
+const Signup: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirm_password, setConfirmPassword] = useState('');
@@ -55,7 +55,7 @@ const Singup: React.FC = () => {
                 value={confirm_password}
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            <button type="submit">SignUp</button>
+            <button type="submit">Sign Up</button>
         </form>
     </div> 
 );
@@ -63,4 +63,4 @@ const Singup: React.FC = () => {
 };
  
 
-export default Singup;
+export default Signup;

@@ -85,6 +85,7 @@ class Website:
 
     def create_screens(self):
         screens.LoginScreen(self.app)
+        screens.SignUpScreen(self.app)
 
     def run(self):
         port = int(5000)
