@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"
  
 const Signup: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirm_password, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
-    
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirm_password, setConfirmPassword] = useState("");
+    const [error, setError] = useState("");
+    const redirect = useNavigate()
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -25,7 +26,7 @@ const Signup: React.FC = () => {
             const data = await res.json();
 
             if (data.error) return setError(data.error);
-            if (data.message === "Signup Successful") window.location.href = "/login";
+            if (data.message === "Signup Successful")  redirect("/login");
         } catch {
             setError("Something went wrong. Please try again.");
         }

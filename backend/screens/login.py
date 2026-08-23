@@ -40,7 +40,7 @@ class LoginScreen:
         if db_password != utils.hash(password, db_salt):
             return jsonify({"error": "Incorrect Password"})
 
-        # initiate a user session passing the username and id into the session for later use
+        # initiate a session passing the username and id into the session for later use
         session["username"] = username
         session["user_id"] = db_user_id
         return jsonify({"message": "Login Successful"})

@@ -7,10 +7,18 @@ from flask_cors import CORS
 
 class Website:
     def __init__(self):
+        # Create Flask app backend 
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
-        CORS(self.app)
 
+        # Handle session keys 
+        self.app.config["SESSION_PERMANENT"] = False
+        self.app.config["SESSION_TYPE"] = "filesystem" 
+
+        # Change Cross‑Origin Resource Sharing to allow cookies to be shared 
+        CORS(self.app, supports_credentials=True)
+
+        # Setup database and screens
         self.db, self.cursor = utils.connect()
         self.create_tables()
         self.create_screens()
@@ -86,6 +94,7 @@ class Website:
     def create_screens(self):
         screens.LoginScreen(self.app)
         screens.SignUpScreen(self.app)
+        screens.Welcome(self.app)
 
     def run(self):
         port = int(5000)
