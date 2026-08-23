@@ -58,7 +58,7 @@ def extract_dominant_frequency(input_frequency_domain, frequency_bins: int = 84,
 
     # define variables
     num_bins = frequency_bins
-    X = input_frequency
+    X = input_frequency_domain
 
 
     # turn into frames and which bins each frame is 
@@ -77,9 +77,9 @@ def extract_dominant_frequency(input_frequency_domain, frequency_bins: int = 84,
     # convert bin to frequency
     min_f = minimum_bandwidth
     n = bins_per_octave
-    dominant_freq = min_f * (2 ** (dominant_bin / n))
+    dominant_f = min_f * (2 ** (dominant_bin / n))
 
-
+    return dominant_f
 
 
     
