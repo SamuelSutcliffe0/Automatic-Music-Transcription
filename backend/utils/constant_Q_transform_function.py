@@ -1,6 +1,6 @@
 from .imports import *
 
-def constant_q_transform(input_signal, sample_frequency: int,minimum_bandwidth: int = 20, quality_factor: int = 8, frequency_bins: int = 72, bins_per_octave: int = 12):
+def constant_q_transform(input_signal, sample_frequency: int,minimum_bandwidth: int = 82.41, quality_factor: int = 8, frequency_bins: int = 84, bins_per_octave: int = 12):
 
     # define variables
     x = np.array(input_signal)
