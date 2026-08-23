@@ -9,12 +9,12 @@ class Welcome:
 
     def logout(self):
 
-        # when logging out, the session's details are removed such that they can't be used by manually routing to other pages after logout 
+        # when logging out, the session's details are removed such that they can't be used by manually routing to other pages after logout
         session.clear()
         return ""
 
     def welcome(self):
-        
+
         # gives session name to frontend
         username = session.get("username")
         if not username:

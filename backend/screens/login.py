@@ -16,7 +16,6 @@ class LoginScreen:
         username = data["username"]
         password = data["password"]
 
-
         # check for empty fields
         if not username or not password:
             return jsonify({"error": "Please Complete All Fields"})

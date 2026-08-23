@@ -5,17 +5,18 @@ import os
 import pymysql
 from flask_cors import CORS
 
+
 class Website:
     def __init__(self):
-        # Create Flask app backend 
+        # Create Flask app backend
         self.app = Flask(__name__)
         self.app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 
-        # Handle session keys 
+        # Handle session keys
         self.app.config["SESSION_PERMANENT"] = False
-        self.app.config["SESSION_TYPE"] = "filesystem" 
+        self.app.config["SESSION_TYPE"] = "filesystem"
 
-        # Change Cross‑Origin Resource Sharing to allow cookies to be shared 
+        # Change Cross‑Origin Resource Sharing to allow cookies to be shared
         CORS(self.app, supports_credentials=True)
 
         # Setup database and screens

@@ -1,3 +1,3 @@
 from .login import *
 from .signup import *
-from .welcome import * 
+from .welcome import *

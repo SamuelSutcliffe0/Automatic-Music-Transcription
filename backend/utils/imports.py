@@ -4,4 +4,5 @@ from mysql.connector import errors
 import os
 from dotenv import load_dotenv
 import pymysql
-import math 
+import math
+import numpy as np
