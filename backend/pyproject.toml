@@ -12,6 +12,7 @@ dependencies = [
     "mysql>=0.0.3",
     "mysql-connector>=2.2.9",
     "mysql-connector-python>=9.7.0",
+    "numpy>=2.5.2",
     "pymysql>=1.2.0",
     "python-dotenv>=1.2.3",
     "ruff>=0.15.21",

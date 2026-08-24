@@ -53,6 +53,7 @@ const Login: React.FC = () => {
         </form>
 
         <li> <Link to="/signup">No Account Yet? Sign Up Here</Link> </li>
+        <li> <Link to="/">Home</Link> </li>
     </div>
 );
 

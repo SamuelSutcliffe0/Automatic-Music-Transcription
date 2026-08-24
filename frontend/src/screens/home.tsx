@@ -5,6 +5,7 @@ const Home: React.FC = () => {
 
     return (
         <div>
+            <li> <Link to="/about">About</Link> </li>
             <li> <Link to="/signup">Sign Up</Link> </li>
             <li> <Link to="/login">Log In</Link> </li>
         </div>

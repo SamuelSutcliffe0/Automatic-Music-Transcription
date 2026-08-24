@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Welcome: React.FC = () => {
     const navigate = useNavigate();
@@ -44,7 +44,8 @@ const Welcome: React.FC = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             <h1>Welcome {username}!</h1>
             <p>You logged in!!!</p>
-
+            <li> <Link to="/tabs">View Your Tabs</Link> </li>
+            <li> <Link to="/groups">View Your Groups</Link> </li>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );
