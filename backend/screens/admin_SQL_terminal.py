@@ -21,23 +21,26 @@ class AdminSQLTerminalScreen:
             self.cursor.execute(query)
             response = self.cursor.fetchall()
             self.db.commit()
-
-        # return error 
-        except Exception as e: 
+        # return error
+        except Exception as e:
             return jsonify({"error": f"Inncorrect SQL: {e}"})
 
         # return SQL result if relevant
         if response:
             try:
-                return jsonify({"message": "<br>".join(", ".join(str(item) for item in row) for row in response)})
+                return jsonify(
+                    {
+                        "message": "<br>".join(
+                            ", ".join(str(item) for item in row) for row in response
+                        )
+                    }
+                )
             except Exception as e:
                 return jsonify({"error": f"Unable to send response: {e}"})
-        else: 
+        else:
             return jsonify({"message": "No Response"})
-
 
     def admin_logout(self):
         # when logging out, the session's details are removed such that they can't be used by manually routing to other pages after logout
         session.clear()
         return ""
-            
