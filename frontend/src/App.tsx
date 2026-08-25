@@ -6,6 +6,8 @@ import Welcome from "./screens/welcome";
 import About from "./screens/about";
 import Tabs from "./screens/tabs";
 import Groups from "./screens/groups";
+import AdminSQLTerminal from "./screens/admin_SQL"
+import AdminLogin from "./screens/admin_login";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/tabs" element={<Tabs />} />
         <Route path="/groups" element={<Groups />} />
+        <Route path="/admin_SQL" element={<AdminSQLTerminal />} />
+        <Route path="/admin_login" element={<AdminLogin />} />
       </Routes>
     </BrowserRouter>
   );

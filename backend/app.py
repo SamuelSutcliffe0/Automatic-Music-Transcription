@@ -95,7 +95,9 @@ class Website:
     def create_screens(self):
         screens.LoginScreen(self.app)
         screens.SignUpScreen(self.app)
-        screens.Welcome(self.app)
+        screens.WelcomeScreen(self.app)
+        screens.AdminLoginScreen(self.app)
+        screens.AdminSQLTerminalScreen(self.app)
 
     def run(self):
         port = int(5000)

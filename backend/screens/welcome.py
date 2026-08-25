@@ -1,7 +1,7 @@
 from .imports import *
 
 
-class Welcome:
+class WelcomeScreen:
     def __init__(self, app):
         self.app = app
         self.app.add_url_rule("/logout", view_func=self.logout, methods=["POST"])
