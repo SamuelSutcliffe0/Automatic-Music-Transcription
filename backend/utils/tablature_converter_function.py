@@ -1,5 +1,5 @@
-import numpy as np
-import random
+from .imports import *
+
 class TabNode:
     def __init__(self, string_number: int = None, fret_number: int = None):
         self.string_number = string_number
