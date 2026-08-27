@@ -31,14 +31,5 @@ def convert_to_tablature_form(head: TabNode):
     return tab.T
 
 
-head = TabNode(random.randint(1,6),random.randint(1,8))
-current = head 
-for _ in range(10):
-    new = TabNode(random.randint(1,6),random.randint(1,8))
-    current.next = new
-    current = new
-
-print(convert_to_tablature_form(head))
-
         
 
