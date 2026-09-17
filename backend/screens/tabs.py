@@ -38,11 +38,3 @@ class TabsScreen:
         data = request.get_json()
         audio = data["audio"]
 
-
-
-
-"""https://stackoverflow.com/questions/64508057/sending-wav-file-from-react-frontend-to-flask-backen
-
-https://stackoverflow.com/questions/61220317/how-long-can-await-wait-in-an-async-function
-
-https://www.reddit.com/r/learnjavascript/comments/ivd69x/how_to_add_a_loading_animation_while_my_promise/"""
