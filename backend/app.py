@@ -98,6 +98,7 @@ class Website:
         screens.WelcomeScreen(self.app)
         screens.AdminLoginScreen(self.app)
         screens.AdminSQLTerminalScreen(self.app)
+        screens.TabsScreen(self.app)
 
     def run(self):
         port = int(5000)
