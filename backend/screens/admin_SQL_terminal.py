@@ -6,6 +6,7 @@ class AdminSQLTerminalScreen:
         self.app = app
         self.app.add_url_rule("/admin_SQL", view_func=self.admin_SQL, methods=["POST"])
         self.app.add_url_rule("/admin_logout", view_func=self.admin_logout, methods=["POST"])
+        self.app.add_url_rule("/admin_stats", view_func=admin_stats, method=["GET"])
 
         self.db, self.cursor = utils.connect()
 
@@ -44,3 +45,27 @@ class AdminSQLTerminalScreen:
         # when logging out, the session's details are removed such that they can't be used by manually routing to other pages after logout
         session.clear()
         return ""
+
+    @utils.auto_reconnect
+    def admin_stats(self):
+        # average number of tabs per user
+        average_tabs_per_user = None
+
+        self.cursor.execute("""
+        SELECT AVG(COUNT(tab_id)) FROM Users, Tabs
+        WHERE Tabs.user_id = Users.user_id
+        """)
+        average_tabs_per_user = self.cursor.fetchone() 
+
+        #average tab length across all users
+        average_tab_length = None
+        self.cursor.execute("""
+        SELECT AVG(COUNT(order_id)) FROM Users, Tabs, TabNodes
+        WHERE Tabs.user_id = Users.user_id
+        AND Tabs.tab_id = TabNodes.tab_id
+        """)
+
+
+
+        
+
