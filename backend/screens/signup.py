@@ -30,7 +30,7 @@ class SignUpScreen:
 
         # SQL query to check username not taken
         self.cursor.execute(
-            "SELECT 1 FROM Users WHERE username=%s LIMIT 1", (username,)
+            "SELECT 1 FROM Users WHERE username=%s", (username,)
         )
         row = self.cursor.fetchone()
         if row:

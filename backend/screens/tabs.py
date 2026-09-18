@@ -29,7 +29,7 @@ class TabsScreen:
         output = []
         for tab_id in row:
             head = utils.reconstruct_tabnodes(tab_id)
-            output.append(utils.convert_to_tablature_form(head))
+            output.append({tab_id : utils.convert_to_tablature_form(head)})
 
         return jsonify({"message": output})
 

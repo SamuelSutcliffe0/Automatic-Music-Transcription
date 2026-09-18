@@ -5,6 +5,9 @@ class GroupsScreen:
     def __init__(self, app):
         self.app = app
         self.app.add_url_rule("/display_groups", view_func=self.display_groups, methods=["GET"])
+        self.app.add_url_rule("/new_group", view_func=self.create_new_group, methods=["POST"])
+        self.app.add_url_rule("/add_entry", view_func=self.add_to_group, methods=["POST"])
+        self.app.add_url_rule("/remove_entry", view_func=self.remove_from_group, methods=["POST"])
 
         self.db, self.cursor = utils.connect()
 
@@ -35,22 +38,68 @@ class GroupsScreen:
             #recreate all tabs in the group
             for tab_id in tabs:
                 head = utils.reconstruct_tabnodes(tab_id)
-                sub_output.append(utils.convert_to_tablature_form(head))
+                sub_output.append({tab_id : utils.convert_to_tablature_form(head)})
 
             # add group to full output
-            output.append(sub_output)
+            output.append({group_id: sub_output})
 
         return jsonify({"message": output})
 
     @utils.auto_reconnect
     def create_new_group(self):
-        pass 
+
+        # create new group 
+        data = request.get_json()
+        if not data["name"]:
+            return jsonify({"errror": "Please enter a name"})
+
+        name = data["name"]
+
+        self.cursor.execute("INSERT INTO Groups (group_name) VALUES (%s)",
+            (name,),
+        )
+        self.db.commit()
     
     @utils.auto_reconnect
     def add_to_group(self):
-        pass 
+
+        # add new entry into a group 
+        data = request.get_json()
+        tab_id = ["tab_id"]
+        group_id = ["group_id"]
+
+        # check tab not already in group
+        self.cursor.execute("""
+        SELECT 1 FROM Entries 
+        WHERE group_id = (%s)
+        AND tab_id = (%s)
+        """,
+            (tab_id, group_id),
+        )
+        row = self.cursor.fetchone()
+        if row:
+            return jsonify({"error": "Tab already in group"})
+
+        # add tab to group if not already in
+        self.cursor.execute("INSERT INTO Entries (tab_id, group_id) VALUES (%s,%s)",
+            (tab_id, group_id),
+        )
+        self.db.commit()
 
     @utils.auto_reconnect
     def remove_from_group(self):
-        pass 
+
+        # remove an entry from a group
+        data = request.get_json()
+        tab_id = ["tab_id"]
+        group_id = ["group_id"]
+
+        self.cursor.execute("""
+        REMOVE FROM Entries 
+        WHERE group_id = (%s)
+        AND tab_id = (%s)
+        """,
+            (tab_id, group_id),
+        )
+        self.db.commit()
 
