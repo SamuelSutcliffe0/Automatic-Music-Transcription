@@ -58,7 +58,7 @@ class Website:
             """)
         self.db.commit()
 
-        # Groups:
+        # Groups (Had to change to UserGroups because Groups is an SQL keyword):
         self.cursor.execute("""
         CREATE TABLE IF NOT EXISTS UserGroups (
             group_id INT AUTO_INCREMENT PRIMARY KEY,

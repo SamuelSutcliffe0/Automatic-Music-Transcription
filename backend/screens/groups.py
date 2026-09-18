@@ -17,11 +17,11 @@ class GroupsScreen:
         # must return every group 
             
         # select all groups 
-        self.cursor.execute("SELECT group_id,group_name FROM Groups")
+        self.cursor.execute("SELECT group_id, group_name FROM UserGroups")
         groups = self.cursor.fetchall()
 
         # prepare output
-        output = None 
+        output = []
         for group in groups:
             group_id = group[0]
             group_name = group[1]
@@ -30,13 +30,16 @@ class GroupsScreen:
             sub_output.append(group_name)
 
             # select all tabs in the group
-            self.cursor.execute("""SELECT tab_id FROM Entries, Groups 
-            WHERE Entries.group_id = Groups.group_id
-            """)
+            self.cursor.execute("""
+            SELECT tab_id FROM Entries
+            WHERE group_id = %s
+            """, (group_id,))
+
             tabs = self.cursor.fetchall()
 
             #recreate all tabs in the group
             for tab_id in tabs:
+                tab_id = tab_id[0] # remove from tuple 
                 head = utils.reconstruct_tabnodes(tab_id)
                 sub_output.append({tab_id : utils.convert_to_tablature_form(head)})
 
@@ -55,7 +58,7 @@ class GroupsScreen:
 
         name = data["name"]
 
-        self.cursor.execute("INSERT INTO Groups (group_name) VALUES (%s)",
+        self.cursor.execute("INSERT INTO UserGroups (group_name) VALUES (%s)",
             (name,),
         )
         self.db.commit()
@@ -65,14 +68,14 @@ class GroupsScreen:
 
         # add new entry into a group 
         data = request.get_json()
-        tab_id = ["tab_id"]
-        group_id = ["group_id"]
+        tab_id = data["tab_id"]
+        group_id = data["group_id"]
 
         # check tab not already in group
         self.cursor.execute("""
         SELECT 1 FROM Entries 
-        WHERE group_id = (%s)
-        AND tab_id = (%s)
+        WHERE tab_id = %s
+        AND group_id = %s
         """,
             (tab_id, group_id),
         )
@@ -91,13 +94,13 @@ class GroupsScreen:
 
         # remove an entry from a group
         data = request.get_json()
-        tab_id = ["tab_id"]
-        group_id = ["group_id"]
+        tab_id = data["tab_id"]
+        group_id = data["group_id"]
 
         self.cursor.execute("""
-        REMOVE FROM Entries 
-        WHERE group_id = (%s)
-        AND tab_id = (%s)
+        DELETE FROM Entries 
+        WHERE tab_id = %s
+        AND group_id = %s
         """,
             (tab_id, group_id),
         )

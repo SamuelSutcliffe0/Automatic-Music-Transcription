@@ -28,6 +28,7 @@ class TabsScreen:
         # for each tab_id, recreate the tab and add it to the output
         output = []
         for tab_id in row:
+            tab_id = tab_id[0] # remove from tuple 
             head = utils.reconstruct_tabnodes(tab_id)
             output.append({tab_id : utils.convert_to_tablature_form(head)})
 
