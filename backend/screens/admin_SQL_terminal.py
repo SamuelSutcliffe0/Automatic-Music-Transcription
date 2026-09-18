@@ -6,7 +6,7 @@ class AdminSQLTerminalScreen:
         self.app = app
         self.app.add_url_rule("/admin_SQL", view_func=self.admin_SQL, methods=["POST"])
         self.app.add_url_rule("/admin_logout", view_func=self.admin_logout, methods=["POST"])
-        self.app.add_url_rule("/admin_stats", view_func=self.admin_stats, method=["GET"])
+        self.app.add_url_rule("/admin_stats", view_func=self.admin_stats, methods=["GET"])
 
         self.db, self.cursor = utils.connect()
 
