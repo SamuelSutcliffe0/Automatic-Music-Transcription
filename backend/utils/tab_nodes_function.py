@@ -3,17 +3,23 @@ from .imports import *
 
 class TabNode:
     def __init__(self, string_number: int = None, fret_number: int = None):
-        self.string_number = string_number
-        self.fret_number = fret_number
+        self.__string_number = string_number
+        self.__fret_number = fret_number
         self.next = None
+        
+    def get_string_number(self):
+        return self.__string_number
+
+    def get_fret_number(self):
+        return self.__fret_number
 
 
 def decustruct_tabnodes(tab_id: int, head: TabNode, cursor, db) -> None:
     order_id = 1
     current = head
     while current:
-        string_number = current.string_number
-        fret_number = current.fret_number
+        string_number = current.get_string_number()
+        fret_number = current.get_fret_number()
         cursor.execute(
             "INSERT INTO TabNodes (tab_id, order_id, string_number, fret_number) VALUES (%s, %s, %s, %s)",
             (tab_id, order_id, string_number, fret_number),
