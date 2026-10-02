@@ -1,30 +1,61 @@
-import React, { useState } from "react";
-import { useNavigate} from "react-router-dom"
- 
+import React, { useCallback, useState } from "react";
+import { Link } from 'react-router-dom';
+import { useDropzone } from "react-dropzone";
+import axios from "axios";
+
 const Upload: React.FC = () => {
-
-    const navigate = useNavigate();
+    const [message, setMessage] = useState("Upload Audio Files Here (.wav)");
     const [error, setError] = useState("");
-    const [tab, setTab] = useState(JSON);
 
-    const handlePolling = async () => {
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
         setError("");
+        setMessage("Loading...");
 
-        while (true) {
-        try{
-            const res = await fetch("http://localhost:5000/upload", {
-                method: "POST",
-                credentials: "include"
-            });
-            const data = await res.json();
-            if (data.message) return setTab(data.message);
-            if (data.error) return setError(data.error);
-        } catch{setError("Something went wrong. Please try again.");}}; 
-        };
+        try {
+            const formData = new FormData();
+            formData.append("file", acceptedFiles[0]);
 
-    
+            const res = await axios.post(
+                "http://localhost:5000/upoad_tab",
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+            
+            if (res.data.message === "upload successful") {
+                setMessage("Upload successful");
 
+                setTimeout(() => {
+                    setMessage("Upload Audio Files Here (.wav)");
+                }, 5000);
+            } else if (res.data.error) {
+                setError(res.data.error);
+                setMessage("Upload Audio Files Here (.wav)");
+            } else {
+                setError("Unexpected response from server.");
+                setMessage("Upload Audio Files Here (.wav)");
+            }
 
+        } catch {
+            setError("Something went wrong. Please try again.");
+            setMessage("Upload Audio Files Here (.wav)");
+        }
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        multiple: false,
+    });
+
+    return (
+        <div>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <p>{message}</p>
+            </div>
+            <li> <Link to="/welcome">Back</Link> </li>
+        </div>
+    );
 };
 
 export default Upload;

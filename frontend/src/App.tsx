@@ -8,6 +8,7 @@ import Tabs from "./screens/tabs";
 import Groups from "./screens/groups";
 import AdminSQLTerminal from "./screens/admin_SQL"
 import AdminLogin from "./screens/admin_login";
+import Upload from "./screens/upload";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/groups" element={<Groups />} />
         <Route path="/admin_SQL" element={<AdminSQLTerminal />} />
         <Route path="/admin_login" element={<AdminLogin />} />
+        <Route path="/upload" element={<Upload />} />
       </Routes>
     </BrowserRouter>
   );

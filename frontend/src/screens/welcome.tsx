@@ -46,6 +46,7 @@ const Welcome: React.FC = () => {
             <p>You logged in!!!</p>
             <li> <Link to="/tabs">View Your Tabs</Link> </li>
             <li> <Link to="/groups">View Your Groups</Link> </li>
+            <li> <Link to="/upload">Upload A New Tab</Link> </li>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );

@@ -34,8 +34,4 @@ class TabsScreen:
 
         return jsonify({"message": output})
 
-    @utils.auto_reconnect
-    def add_tab(self):
-        data = request.get_json()
-        audio = data["audio"]
 

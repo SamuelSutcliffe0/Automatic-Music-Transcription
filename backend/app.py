@@ -100,6 +100,7 @@ class Website:
         screens.AdminSQLTerminalScreen(self.app)
         screens.TabsScreen(self.app)
         screens.GroupsScreen(self.app)
+        screens.UploadScreen(self.app)
 
     def run(self):
         port = int(5000)
